@@ -1,7 +1,7 @@
 #esta en la parte 3
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app
+from app.parte2 import app  
 
 client = TestClient(app)
 
