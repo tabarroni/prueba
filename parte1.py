@@ -21,7 +21,7 @@ def eliminar_duplicados(lista):
                 sin_duplicados[j] = sin_duplicados[j + 1]
                 sin_duplicados[j + 1] = temp
     return sin_duplicados
-
+#este es un ejemplo de uso de la función eliminar_duplicados
 entrada = [4, 2, 7, 2, 4, 9, 1]
 salida = eliminar_duplicados(entrada)
 
