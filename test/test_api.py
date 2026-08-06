@@ -1,7 +1,14 @@
-#esta en la parte 3
+import sys
+from pathlib import Path
+
+# Añade la carpeta raíz (PRUEBA) al path de Python
+root_path = Path(__file__).resolve().parent.parent
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
+
 import pytest
 from fastapi.testclient import TestClient
-from app.parte2 import app  
+from app.parte2 import app
 
 client = TestClient(app)
 

@@ -1,31 +1,21 @@
-from abc import ABC, abstractmethod
+from pydantic import BaseModel, Field
+from typing import Literal
 
-# Interfaces y Estrategias (Pattern Strategy)
-class NotificationStrategy(ABC):
-    @abstractmethod
-    def send(self, user_id: str, message: str) -> None:
-        pass
 
-class EmailNotificationStrategy(NotificationStrategy):
-    def send(self, user_id: str, message: str) -> None:
-        # Lógica simulada de envío de Email
-        print(f"[EMAIL] Enviando correo a usuario {user_id}: {message}")
+class NotificationRequest(BaseModel):
+    """
+    Modelo de validación para la petición de envío de notificación (Request Body).
+    Garantiza que todos los parámetros sean obligatorios y cumplan con los formatos esperados.
+    """
+    userId: str = Field(..., min_length=1, description="ID único del usuario destinatario")
+    message: str = Field(..., min_length=1, description="Contenido o mensaje de la notificación")
+    channel: Literal["email", "sms"] = Field(..., description="Canal de envío permitido ('email' o 'sms')")
 
-class SmsNotificationStrategy(NotificationStrategy):
-    def send(self, user_id: str, message: str) -> None:
-        # Lógica simulada de envío de SMS
-        print(f"[SMS] Enviando SMS a usuario {user_id}: {message}")
 
-# Factory (Pattern Factory)
-class NotificationFactory:
-    _strategies = {
-        "email": EmailNotificationStrategy(),
-        "sms": SmsNotificationStrategy()
-    }
-
-    @classmethod
-    def get_strategy(cls, channel: str) -> NotificationStrategy:
-        strategy = cls._strategies.get(channel.lower())
-        if not strategy:
-            raise ValueError(f"Canal no soportado: {channel}")
-        return strategy
+class NotificationResponse(BaseModel):
+    """
+    Modelo para estructurar la respuesta de una notificación o el registro dentro del historial.
+    """
+    userId: str
+    message: str
+    channel: str
